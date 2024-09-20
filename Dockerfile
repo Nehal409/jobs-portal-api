@@ -15,4 +15,4 @@ EXPOSE 8000
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start"]
