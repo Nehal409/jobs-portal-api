@@ -1,16 +1,17 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
-import { PassportModule } from '@nestjs/passport';
-import configuration from 'config/index';
-import { WinstonModule } from 'nest-winston';
-import { ZodValidationPipe } from 'nestjs-zod';
-import { AuthModule } from './components/auth/auth.module';
-import { UsersModule } from './components/users/users.module';
-import { UsersRepository } from './components/users/users.repository';
-import { CustomResponseMiddleware } from './middleware/response';
-import { PrismaModule } from './prisma/prisma.module';
-import { winstonLogger } from './utils/winston-logger';
+import { MiddlewareConsumer, Module, RequestMethod } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { APP_PIPE } from "@nestjs/core";
+import { PassportModule } from "@nestjs/passport";
+import configuration from "config/index";
+import { WinstonModule } from "nest-winston";
+import { ZodValidationPipe } from "nestjs-zod";
+import { AuthModule } from "./components/auth/auth.module";
+import { JobsModule } from "./components/jobs/jobs.module";
+import { UsersModule } from "./components/users/users.module";
+import { UsersRepository } from "./components/users/users.repository";
+import { CustomResponseMiddleware } from "./middleware/response";
+import { PrismaModule } from "./prisma/prisma.module";
+import { winstonLogger } from "./utils/winston-logger";
 
 @Module({
   providers: [
@@ -24,12 +25,13 @@ import { winstonLogger } from './utils/winston-logger';
     PrismaModule,
     UsersModule,
     AuthModule,
+    JobsModule,
     ConfigModule.forRoot({
       cache: true,
       isGlobal: true,
       load: [configuration],
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({ defaultStrategy: "jwt" }),
     WinstonModule.forRoot({
       instance: winstonLogger,
       transports: winstonLogger.transports,
@@ -40,6 +42,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CustomResponseMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes({ path: "*", method: RequestMethod.ALL });
   }
 }
