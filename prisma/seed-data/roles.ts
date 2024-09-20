@@ -1,19 +1,14 @@
-import { Role } from 'src/enums/roles';
+import { Role } from "src/enums/roles";
 
 export const roles = [
   {
     id: 1,
-    name: Role.ADMIN,
-    description: 'Admin Role',
+    name: Role.JOB_SEEKER,
+    description: "Job Seeker Role - Can search for and apply to jobs",
   },
   {
     id: 2,
-    name: Role.SUPER_ADMIN,
-    description: 'Super Admin Role',
-  },
-  {
-    id: 3,
-    name: Role.USER,
-    description: 'User Role',
+    name: Role.RECRUITER,
+    description: "Recruiter - Can add and manage job postings",
   },
 ];

@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UsersModule } from '../users/users.module';
-import { UsersRepository } from '../users/users.repository';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './strategy/jwt.strategy';
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
+import { PrismaService } from "src/prisma/prisma.service";
+import { UsersModule } from "../users/users.module";
+import { UsersRepository } from "../users/users.repository";
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
+import { JwtStrategy } from "./strategy/jwt.strategy";
 
 @Module({
   imports: [
@@ -14,9 +14,9 @@ import { JwtStrategy } from './strategy/jwt.strategy';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get('jwt.accessTokenSecret'),
+        secret: configService.get("jwt.accessTokenSecret"),
         signOptions: {
-          expiresIn: parseInt(configService.get('jwt.accessTokenExpiry')),
+          expiresIn: parseInt(configService.get("jwt.accessTokenExpiry")),
         },
       }),
       inject: [ConfigService],

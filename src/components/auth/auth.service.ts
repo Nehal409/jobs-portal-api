@@ -1,22 +1,22 @@
-import { badRequest } from '@hapi/boom';
-import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { PrismaClient, User, UserRole } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { messages } from 'src/constants/messages';
-import { Role } from 'src/enums/roles';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Logger } from 'winston';
-import { UsersRepository } from '../users/users.repository';
+import { badRequest } from "@hapi/boom";
+import { Inject, Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
+import { PrismaClient, User, UserRole } from "@prisma/client";
+import * as bcrypt from "bcrypt";
+import { WINSTON_MODULE_PROVIDER } from "nest-winston";
+import { messages } from "src/constants/messages";
+import { Role } from "src/enums/roles";
+import { PrismaService } from "src/prisma/prisma.service";
+import { Logger } from "winston";
+import { UsersRepository } from "../users/users.repository";
 import {
   LoginRequestDto,
   RefreshAccessTokenDto,
   RegisterRequestDto,
-} from './dto/auth.dto';
-import { AccessTokenPayload } from './types/AccessTokenPayload';
-import { AccessToken, AuthTokens, RefreshToken } from './types/auth-token';
+} from "./dto/auth.dto";
+import { AccessTokenPayload } from "./types/AccessTokenPayload";
+import { AccessToken, AuthTokens, RefreshToken } from "./types/auth-token";
 
 @Injectable()
 export class AuthService {
@@ -98,8 +98,8 @@ export class AuthService {
     const payload = { userId };
     return {
       refreshToken: this.jwtService.sign(payload, {
-        secret: this.configService.get('jwt.refreshTokenSecret'),
-        expiresIn: this.configService.get('jwt.refreshTokenExpiry'),
+        secret: this.configService.get("jwt.refreshTokenSecret"),
+        expiresIn: this.configService.get("jwt.refreshTokenExpiry"),
       }),
     };
   }
@@ -109,7 +109,7 @@ export class AuthService {
   ): Promise<AccessToken> {
     const { refreshToken } = refreshAccessTokenDto;
     const payload: AccessTokenPayload = this.jwtService.verify(refreshToken, {
-      secret: this.configService.get<string>('jwt.refreshTokenSecret'),
+      secret: this.configService.get<string>("jwt.refreshTokenSecret"),
     });
     const { userId } = payload;
     const userRole = await this.getUserRole(userId);

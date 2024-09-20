@@ -1,19 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { messages } from 'src/constants/messages';
-import { AuthService } from './auth.service';
+import { Body, Controller, Post } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
+import { messages } from "src/constants/messages";
+import { AuthService } from "./auth.service";
 import {
   LoginRequestDto,
   RefreshAccessTokenDto,
   RegisterRequestDto,
-} from './dto/auth.dto';
+} from "./dto/auth.dto";
 
-@ApiTags('Auth')
-@Controller('auth')
+@ApiTags("Auth")
+@Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post("register")
   async register(@Body() registerBody: RegisterRequestDto) {
     const token = await this.authService.register(registerBody);
     return {
@@ -22,7 +22,7 @@ export class AuthController {
     };
   }
 
-  @Post('login')
+  @Post("login")
   async login(@Body() loginBody: LoginRequestDto) {
     const token = await this.authService.login(loginBody);
     return {
@@ -31,7 +31,7 @@ export class AuthController {
     };
   }
 
-  @Post('refresh-token')
+  @Post("refresh-token")
   async refreshToken(@Body() refreshAccessTokenDto: RefreshAccessTokenDto) {
     const accessToken = await this.authService.refreshAccessToken(
       refreshAccessTokenDto,

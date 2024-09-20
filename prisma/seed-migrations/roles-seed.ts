@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import { roles } from 'prisma/seed-data/roles';
+import { PrismaClient } from "@prisma/client";
+import { roles } from "prisma/seed-data/roles";
 
 const prisma = new PrismaClient();
 
 export const roleSeed = async () => {
-  const seedName = 'role-seed';
+  const seedName = "role-seed";
 
   // Check if the seed has already been executed
   const existingSeed = await prisma.seedHistory.findUnique({
