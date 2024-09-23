@@ -4,7 +4,9 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
+  Put,
   Req,
   UseGuards,
 } from "@nestjs/common";
@@ -13,7 +15,7 @@ import { messages } from "src/constants/messages";
 import { Role } from "src/enums/roles";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { JwtAuthGuard, RoleGuard } from "../auth/guards";
-import { JobPayloadDto } from "./dto/jobs.dto";
+import { JobPayloadDto, UpdateJobDto } from "./dto/jobs.dto";
 import { JobsService } from "./jobs.service";
 
 @ApiTags("Jobs")
@@ -34,18 +36,46 @@ export class JobsController {
     };
   }
 
+  @Roles(Role.RECRUITER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBearerAuth()
+  @Put(":id")
+  async updateJob(
+    @Param("id", ParseIntPipe) id: number,
+    @Body() updateJobDto: UpdateJobDto,
+  ) {
+    const updatedJob = await this.jobsService.updateJob(id, updateJobDto);
+    return {
+      message: messages.JOB.UPDATED_SUCCESS,
+      data: updatedJob,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get()
-  findAll() {
-    return this.jobsService.findAll();
+  async findAll() {
+    const jobs = await this.jobsService.findAllJobs();
+    return {
+      message: messages.DATA_FETCHED_SUCCESS,
+      data: jobs,
+    };
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.jobsService.findOne(+id);
+  async findOne(@Param("id", ParseIntPipe) id: number) {
+    const job = await this.jobsService.findJobById(id);
+    return {
+      message: messages.DATA_FETCHED_SUCCESS,
+      data: job,
+    };
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.jobsService.remove(+id);
+  async remove(@Param("id", ParseIntPipe) id: number) {
+    await this.jobsService.deleteJob(id);
+    return {
+      message: messages.JOB.DELETED_SUCCESS,
+    };
   }
 }

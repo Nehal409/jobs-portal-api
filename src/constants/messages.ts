@@ -16,6 +16,9 @@ export const messages = {
     ACCESS_TOKEN_SUCCESS: "Access token generated successfully",
   },
   JOB: {
+    NOT_FOUND: "Job not found",
     CREATED_SUCCESS: "Job created successfully",
+    DELETED_SUCCESS: "Job deleted successfully",
+    UPDATED_SUCCESS: "Job updated successfully",
   },
 };

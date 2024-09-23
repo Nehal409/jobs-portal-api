@@ -17,6 +17,36 @@ model User {
   lastName  String?
   phone     String?
   roles     UserRole[]
+  jobs      Jobs[]
+}
+
+model Jobs {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  salary      String
+  location    String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  jobType     JobType
+  Company     Company? @relation(fields: [companyId], references: [id])
+  companyId   Int?
+}
+
+enum JobType {
+  PART_TIME
+  FULL_TIME
+  REMOTE
+  INTERNSHIP
+}
+
+model Company {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  email       String
+  phone       String
+  jobs        Jobs[]
 }
 
 model Role {
