@@ -48,8 +48,8 @@ export class JobsService {
     });
   }
 
-  async findAllJobs() {
-    return this.jobsRepository.fetchAllJobs();
+  async findAllJobs(limit?: number) {
+    return this.jobsRepository.fetchAllJobs(limit);
   }
 
   async findJobById(id: number) {

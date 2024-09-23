@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from "@nestjs/common";
@@ -54,14 +55,16 @@ export class JobsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Get()
-  async findAll() {
-    const jobs = await this.jobsService.findAllJobs();
+  async findAll(@Query("limit") limit: string) {
+    const jobs = await this.jobsService.findAllJobs(+limit);
     return {
       message: messages.DATA_FETCHED_SUCCESS,
       data: jobs,
     };
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
     const job = await this.jobsService.findJobById(id);
@@ -71,6 +74,9 @@ export class JobsController {
     };
   }
 
+  @Roles(Role.RECRUITER)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @ApiBearerAuth()
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: number) {
     await this.jobsService.deleteJob(id);

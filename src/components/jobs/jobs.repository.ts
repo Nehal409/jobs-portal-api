@@ -73,8 +73,10 @@ export class JobsRepository {
     });
   }
 
-  async fetchAllJobs() {
-    return this.prisma.jobs.findMany({});
+  async fetchAllJobs(limit?: number) {
+    return this.prisma.jobs.findMany({
+      take: limit || undefined,
+    });
   }
 
   async fetchJobDetails(id: number) {
