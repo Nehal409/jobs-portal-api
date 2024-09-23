@@ -61,6 +61,10 @@ export class JobsService {
     if (!job) {
       throw badRequest(messages.JOB.NOT_FOUND);
     }
-    return this.jobsRepository.deleteJob(id);
+
+    return this.prisma.$transaction(async (prismaClient: PrismaClient) => {
+      await this.jobsRepository.deleteCompany(prismaClient, job.companyId);
+      return this.jobsRepository.deleteJob(prismaClient, id);
+    });
   }
 }

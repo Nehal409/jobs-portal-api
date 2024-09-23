@@ -84,9 +84,15 @@ export class JobsRepository {
     });
   }
 
-  async deleteJob(id: number) {
-    return this.prisma.jobs.delete({
+  async deleteJob(prismaClient: PrismaClient, id: number) {
+    return prismaClient.jobs.delete({
       where: { id },
+    });
+  }
+
+  async deleteCompany(prismaClient: PrismaClient, companyId: number) {
+    return prismaClient.company.delete({
+      where: { id: companyId },
     });
   }
 }
